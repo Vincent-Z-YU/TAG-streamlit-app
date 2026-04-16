@@ -226,72 +226,60 @@ def game_menu_ui():
             r = random.choice(['1','2','3','4','5','6'])
             res_box.markdown(f"""<div style="background:#000;padding:20px;border-radius:10px;text-align:center;"><h2>结果：{r}</h2></div>""", unsafe_allow_html=True)
 
-    # ===================== 自定义转盘 + 导入导出（最终完美版） =====================
     with t4:
         st.subheader("🎯 自定义转盘")
-        st.caption("每行一个选项，空行自动忽略")
-        st.warning("0022：本功能还在开发阶段，文本导入功能尚未完成。请您谅解")
+        st.caption("每行一个选项，空行会自动忽略")
 
-        # 初始化
-        if "wheel_options" not in st.session_state:
-            st.session_state.wheel_options = "一等奖\n二等奖\n三等奖\n谢谢参与"
+        # 导入后自动回填内容
+        if "imported_content" not in st.session_state:
+            st.session_state.imported_content = "一等奖\n二等奖\n三等奖\n谢谢参与"
 
-        # 文本框
-        user_text = st.text_area(
-            "编辑转盘选项",
-            st.session_state.wheel_options,
-            height=180
-        )
-
-        # 实时更新选项
-        st.session_state.wheel_options = user_text
-        lines = [line.strip() for line in user_text.splitlines() if line.strip()]
+        # 唯一输入框（永远只有一个）
+        content = st.text_area("编辑选项", st.session_state.imported_content, height=180)
+        options = [line.strip() for line in content.splitlines() if line.strip()]
 
         # 按钮
-        col1, col2, col3 = st.columns(3)
-        spin = col1.button("开始转盘", type="primary", use_container_width=True)
-        export_file = col2.button("导出配置.txt", use_container_width=True)
-        import_file = col3.file_uploader("导入.txt", type=["txt"], label_visibility="collapsed")
+        c1, c2, c3 = st.columns(3)
+        spin = c1.button("开始转盘", type="primary", use_container_width=True)
+        export = c2.button("导出配置", use_container_width=True)
+        import_file = c3.file_uploader("导入.txt", type=["txt"], label_visibility="collapsed")
 
-        result_box = st.empty()
+        # 结果区域
+        result_area = st.empty()
+        # 导出
+        if export:
+            import base64
+            b64 = base64.b64encode(content.encode("utf-8")).decode()
+            st.markdown(f"""
+            <a href="data:text/plain;charset=utf-8;base64,{b64}" download="转盘配置.txt">
+            <button style="width:100%;padding:9px;background:#0078d4;color:white;border:none;border-radius:6px">
+            📥 点击下载
+            </button></a>
+            """, unsafe_allow_html=True)
 
+        # 导入：只覆盖内容，不创建新输入框
+        if import_file:
+            try:
+                txt = import_file.read().decode("utf-8")
+                st.session_state.imported_content = txt
+                result_area.success("✅ 导入成功！已覆盖到输入框")
+            except:
+                result_area.error("❌ 导入失败")
         # 转盘
         if spin:
-            if not lines:
-                st.warning("请先输入选项")
+            if not options:
+                st.warning("请输入至少一个选项")
             else:
-                result_box.info("🔄 转盘转动中...")
+                result_area.info("🔄 转盘中...")
                 time.sleep(0.8)
-                res = random.choice(lines)
-                result_box.markdown(f"""
-                <div style="background:#000;color:#fff;padding:24px;border-radius:12px;text-align:center;">
+                res = random.choice(options)
+                result_area.markdown(f"""
+                <div style='background:#000;color:white;padding:24px;border-radius:12px;text-align:center'>
                 <h1>🎯 {res}</h1>
-                </div>""", unsafe_allow_html=True)
+                </div>
+                """, unsafe_allow_html=True)
 
-        # 导出
-        if export_file:
-            import base64
-            b64 = base64.b64encode(user_text.encode("utf-8")).decode()
-            st.markdown(f'''
-            <a href="data:text/plain;charset=utf-8;base64,{b64}" download="转盘配置.txt"
-            style="display:inline-block;padding:8px 16px;background:#0078d4;color:white;border-radius:6px;text-decoration:none;">
-            📥 点击下载配置
-            </a>''', unsafe_allow_html=True)
 
-        # 导入（真正生效！）
-        if import_file is not None:
-            try:
-                content = import_file.read()
-                try:
-                    text = content.decode("utf-8")
-                except:
-                    text = content.decode("gbk")
-                text = text.replace("\r\n", "\n").replace("\r", "\n")
-                st.session_state.wheel_options = text
-                st.success("✅ 导入成功！")
-                st.rerun()
-            except:
-                st.error("❌ 导入失败，请重试")
 
 
 # ======================== 4. 数学工具功能 ========================
