@@ -544,7 +544,7 @@ def about_menu_ui():
 
     # 左侧：头像区域
     with col_avatar:
-        st.image("D:/Vincent files/Vincent/uh.png", width=200)
+        st.image("VIN.png", width=200)
         st.caption("Vincent")
 
     # 右侧：寄语文本框
