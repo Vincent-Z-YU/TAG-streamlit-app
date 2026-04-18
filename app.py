@@ -21,9 +21,8 @@ st.set_page_config(
 )
 
 
-# ======================== 1. BMI计算器功能 ========================
+# BMI
 def bmi_calculator_ui():
-    """BMI计算器"""
     st.subheader(f"{PROGRAM_NAME_ABBREVIATION} - BMI计算器")
     st.divider()
 
@@ -35,36 +34,32 @@ def bmi_calculator_ui():
         "体重/千克", min_value=20, max_value=200, step=1
     )
 
-    # ✅ 按钮固定在上方，结果区域在下方
     if st.button("计算BMI", type="primary"):
-        # 结果占位符（在按钮下方）
+        # 结果占位符
         result_placeholder = st.empty()
         advice_placeholder = st.empty()
         ai_placeholder = st.empty()
 
-        # 🔄 加载动画显示在按钮下方
         result_placeholder.info("🔄 正在计算BMI，请稍候...")
         time.sleep(0.6)
 
-        # 计算逻辑
         bmi = weight / (height ** 2)
         if bmi < 18.5:
             category = "偏瘦"
             color = "#1E90FF"
-            advice = "🍀 建议：增加营养摄入，多吃富含蛋白质的食物，规律作息，适当力量训练。"
+            advice = "＞﹏＜ 建议：增加营养摄入，多吃富含蛋白质的食物，规律作息，适当力量训练。"
         elif 18.5 <= bmi < 24:
             category = "正常"
             color = "#32CD32"
-            advice = "✅ 建议：继续保持当前饮食与运动习惯，维持健康体重！"
+            advice = "(≧ ▽ ≦) 建议：继续保持当前饮食与运动习惯，维持健康体重"
         elif 24 <= bmi < 28:
             category = "超重"
             color = "#FFD700"
-            advice = "⚠️ 建议：控制高油高糖饮食，增加有氧运动（跑步、游泳、骑行）。"
+            advice = "≡(▔﹏▔)≡ 建议：控制高油高糖饮食，增加有氧运动（跑步、游泳、骑行）。"
         else:
             category = "肥胖"
             color = "#FF6347"
-            advice = "❌ 建议：尽快调整饮食结构，坚持规律运动，可咨询医生制定减脂计划。"
-
+            advice = "(ノ｀Д)ノ 建议：尽快调整饮食结构，坚持规律运动，可咨询医生制定减脂计划。"
         # 替换结果
         result_placeholder.markdown(f"""
         <div style="background-color:#000;padding:20px;border-radius:10px;text-align:center;">
@@ -77,14 +72,14 @@ def bmi_calculator_ui():
         advice_placeholder.subheader("📝 健康建议")
         advice_placeholder.info(advice)
 
-        # # 显示AI按钮（三列布局：Bing, AI, Google）
+        # # 显示按钮（三列布局）
         # prompt = f"BMI{bmi:.2f}，{category}，健康建议"
         # c1, c2, c3 = ai_placeholder.columns(3)
         # c1.link_button("Ask Bing", f"https://www.bing.com/search?q={prompt}")       # Ask Bing
         # c2.link_button("Ask AI", f"https://chatgpt.com?q={prompt}")                 # Ask ChatGPT
         # c3.link_button("Ask Google", f"https://www.google.com/search?q={prompt}")   # Ask Google
 
-        # 显示建议按钮（紧凑）
+        # 显示按钮（紧凑）
         prompt = f"BMI{bmi:.2f}，{category}，健康建议"
         ai_placeholder.markdown(f'''
         <div style="display:flex;gap:6px;justify-content:flex-start;margin-top:10px;">
@@ -95,10 +90,10 @@ def bmi_calculator_ui():
         ''', unsafe_allow_html=True)
 
 
-# ======================== 2. 凯撒密码加解密功能 ========================
+# 凯撒密码加解密
 def encryption(plaintext: str, offset: str) -> str:
     if plaintext == '' and offset == '':
-        return 'TAG says:"ifmmp xpsme"'
+        return 'Vincent says:"ifmmp xpsme"'
 
     quantity = int(offset) % 26
     ciphertext_list = []
@@ -142,8 +137,7 @@ def decryption(ciphertext: str, offset: str) -> str:
 
 def blasting(ciphertext: str) -> str:
     if ciphertext == '':
-        return '''请输入文本。。。
-(若输入了文本但仍显示为输入，则请点击重置爆破)'''
+        return '请输入文本(若输入了文本但仍显示为输入，则请点击重置爆破)'
 
     plaintext_list = []
     quantity = 1
@@ -162,11 +156,10 @@ def blasting(ciphertext: str) -> str:
 
 
 def caesar_menu_ui():
-    """凯撒密码"""
     st.subheader(f"{PROGRAM_NAME_ABBREVIATION} - 凯撒密码加解密")
     st.divider()
 
-    # 选项卡切换：加密/解密/爆破
+    # 选项卡切换
     tab1, tab2, tab3 = st.tabs(["加密", "解密", "爆破"])
 
     # 加密标签页
@@ -174,11 +167,10 @@ def caesar_menu_ui():
     offset = tab1.text_input("输入偏移值（正数）", placeholder="如：1/5/10")
     if tab1.button("开始加密", type="primary"):
         if not offset.isdigit() and offset != '':
-            tab1.error("偏移值必须是纯数字！")
+            tab1.error("偏移值必须是纯数字")
         else:
-            # 移除with spinner，直接执行加密
             result = encryption(plaintext, offset)
-            tab1.success("加密完成！")
+            tab1.success("加密完成")
             # tab1.write(result)
             tab1.text_area("密文结果", value=result, height=150, disabled=True, placeholder="解密结果将显示在这里...")
 
@@ -187,11 +179,10 @@ def caesar_menu_ui():
     offset_dec = tab2.text_input("输入偏移值（正数）", placeholder="如：1/5/10", key="dec_offset")
     if tab2.button("开始解密", type="primary"):
         if not offset_dec.isdigit():
-            tab2.error("偏移值必须是纯数字！")
+            tab2.error("偏移值必须是纯数字")
         else:
-            # 移除with spinner，直接执行解密
             result = decryption(ciphertext, offset_dec)
-            tab2.success("解密完成！")
+            tab2.success("解密完成")
             # tab2.write(result)
             tab2.text_area("明文结果", value=result, height=150, disabled=True, placeholder="解密结果将显示在这里...")
 
@@ -215,15 +206,14 @@ def caesar_menu_ui():
     if tab3.button("开始/继续爆破", type="primary"):
         if st.session_state.blast_count == 0 and st.session_state.current_ct == "":
             if ciphertext_blast == "":
-                tab3.error("请先输入密文！")
+                tab3.error("请先输入密文")
             else:
                 st.session_state.current_ct = ciphertext_blast
         if st.session_state.current_ct == "":
-            tab3.error("请先输入密文！")
+            tab3.error("请先输入密文")
         elif st.session_state.blast_count >= 25:
-            tab3.warning("已达到理论最大爆破次数（25次）！")
+            tab3.warning("已达到理论最大爆破次数（25次）")
         else:
-            # 移除with spinner，直接执行爆破
             result = blasting(st.session_state.current_ct)
             st.session_state.current_result = result
             st.session_state.current_ct = result
@@ -231,10 +221,10 @@ def caesar_menu_ui():
             # tab3.write(result)
             tab3.text_area("爆破结果", value=result, height=150, disabled=True, placeholder="爆破结果将显示在这里...")
             if st.session_state.blast_count >= 25:
-                tab3.warning("已达到理论最大爆破次数（25次）！")
+                tab3.warning("已达到理论最大爆破次数（25次）")
 
 
-# ======================== 3. 随机数游戏功能 ========================
+# 随机数游戏
 def game_menu_ui():
     st.subheader(f"{PROGRAM_NAME_ABBREVIATION} - 随机数游戏")
     st.divider()
@@ -275,19 +265,16 @@ def game_menu_ui():
         if "imported_content" not in st.session_state:
             st.session_state.imported_content = "一等奖\n二等奖\n三等奖\n谢谢参与"
 
-        # 唯一输入框（永远只有一个）
         content = st.text_area("编辑选项", st.session_state.imported_content, height=180)
         options = [line.strip() for line in content.splitlines() if line.strip()]
 
-        # 按钮
         c1, c2, c3 = st.columns(3)
         spin = c1.button("开始转盘", type="primary", use_container_width=True)
         export = c2.button("导出配置", use_container_width=True)
         import_file = c3.file_uploader("导入.txt", type=["txt"], label_visibility="collapsed")
 
-        # 结果区域
         result_area = st.empty()
-        # 导出
+
         if export:
             import base64
             b64 = base64.b64encode(content.encode("utf-8")).decode()
@@ -298,15 +285,14 @@ def game_menu_ui():
             </button></a>
             """, unsafe_allow_html=True)
 
-        # 导入：只覆盖内容，不创建新输入框
         if import_file:
             try:
                 txt = import_file.read().decode("utf-8")
                 st.session_state.imported_content = txt
-                result_area.success("✅ 导入成功！已覆盖到输入框")
+                result_area.success("✅ 导入成功，已覆盖到输入框")
             except:
                 result_area.error("❌ 导入失败")
-        # 转盘
+
         if spin:
             if not options:
                 st.warning("请输入至少一个选项")
@@ -321,9 +307,8 @@ def game_menu_ui():
                 """, unsafe_allow_html=True)
 
 
-# ======================== 4. 数学工具功能 ========================
+# 数学工具
 def number_info_ui(parent):
-    """N为何数（接收父容器参数）"""
     parent.subheader("N为何数（分析有理数属性）")
     num_input = parent.number_input(
         "输入有理数",
@@ -369,7 +354,6 @@ def number_info_ui(parent):
 
 
 def lcm_calculator_ui(parent):
-    """最小公倍数计算器（接收父容器参数）"""
     parent.subheader("最小公倍数计算器")
     input_str = parent.text_input("请输入用逗号(英文逗号)分隔的整数", placeholder="如：2,3,4")
 
@@ -377,7 +361,7 @@ def lcm_calculator_ui(parent):
         try:
             numbers = [int(num.strip()) for num in input_str.split(",") if num.strip()]
             if not numbers:
-                parent.error("未输入任何数字！")
+                parent.error("未输入任何数字")
                 return
 
             numbers_sorted = sorted(numbers)
@@ -392,11 +376,10 @@ def lcm_calculator_ui(parent):
 
             parent.success(f"{numbers} 的最小公倍数是：{lcm}")
         except ValueError:
-            parent.error("输入无效！请输入整数并用英文逗号分隔！")
+            parent.error("输入无效，请输入整数并用英文逗号分隔")
 
 
 def common_factors_ui(parent):
-    """两数公因数计算器（接收父容器参数）"""
     parent.subheader("两数公因数计算器")
     col1, col2 = parent.columns(2)
     a = col1.number_input("输入第一个整数", step=1, value=0)
@@ -421,7 +404,6 @@ def common_factors_ui(parent):
 
 
 def number_sort_ui(parent):
-    """数字排序工具（接收父容器参数）"""
     parent.subheader("数字排序工具")
     input_str = parent.text_input("请输入用逗号(英文逗号)分隔的整数", placeholder="如：5,2,8,1", key="sort_input")
 
@@ -429,18 +411,17 @@ def number_sort_ui(parent):
         try:
             numbers = [int(num.strip()) for num in input_str.split(",") if num.strip()]
             if not numbers:
-                parent.error("未输入任何数字！")
+                parent.error("未输入任何数字")
                 return
 
             sorted_nums = sorted(numbers)
             parent.write(f"输入数字：{numbers}")
             parent.success(f"从小到大排序：{sorted_nums}")
         except ValueError:
-            parent.error("输入无效！请输入整数并用英文逗号分隔！")
+            parent.error("输入无效，请输入整数并用英文逗号分隔")
 
 
 def math_tools_menu_ui():
-    """数学工具"""
     st.subheader(f"{PROGRAM_NAME_ABBREVIATION} - 数学工具")
     st.divider()
 
@@ -451,7 +432,7 @@ def math_tools_menu_ui():
         "数字排序工具"
     ])
 
-    # 把每个tab作为父容器传入子函数
+
     number_info_ui(tab1)
     lcm_calculator_ui(tab2)
     common_factors_ui(tab3)
@@ -486,14 +467,103 @@ def web_menu_ui():
         st.markdown("优质网站收录：[lkssite](https://lkssite.vip/)")
         st.markdown("另一个弱一点的优质网站收录：[就是我！(≧∇≦)ﾉ](https://vd3.bdstatic.com/mda-qjcrrsjkbtmeycuv/360p/h264/1728843064552037960/mda-qjcrrsjkbtmeycuv.mp4)")
 
+def about_menu_ui():
+    st.subheader(f"{PROGRAM_NAME_ABBREVIATION} - 关于项目")
+    st.divider()
 
+    st.markdown("## 项目简介")
+    st.write("项目全称：Tools and Games (TAG) V2.0")
+    st.write("开发语言：Python")
+    st.write("搭建框架：Streamlit")
+    st.write("项目类型:多功能实用工具集网页应用")
+    st.write("本项目是一款轻量化跨平台网页工具合集，整合日常学习计算、文本加密、趣味随机游戏、实用网站导航等多功能模块，界面简洁易用，操作门槛低，无需安装客户端，浏览器即可打开使用。")
 
-# ======================== 主页面 ========================
+    st.divider()
+
+    st.markdown("## 开发初心")
+    st.write("""
+    在日常学习与生活中，经常会遇到零散重复的计算需求、文本加密需求、随机选择抽签场景，同时网上各类工具分散杂乱、广告繁多。
+
+    因此我开发了 **TAG 工具集**，整合所有常用小功能到同一个网页里，无多余广告、界面简洁清爽，兼顾学习实用性与休闲趣味性，
+    希望用编程做出能真正服务日常、方便自己与他人的轻量化工具。
+    """)
+
+    st.divider()
+
+    st.markdown("## 全部功能模块")
+    with st.expander("数学工具箱", expanded=False):
+        st.write("""
+        - BMI健康指数计算器
+        - 整数属性分析（正负数、奇偶、质合数判断）
+        - 多数字最小公倍数计算
+        - 两数公因数全量求解
+        - 数字自动排序工具
+        """)
+    with st.expander("文本加解密", expanded=False):
+        st.write("""
+        - 凯撒密码自定义偏移加密
+        - 凯撒密码对应偏移解密
+        - 凯撒密码逐位爆破遍历
+        """)
+    with st.expander("趣味随机游戏", expanded=False):
+        st.write("""
+        - 抛瓶子、抛硬币、摇骰子经典随机小游戏
+        - 自定义抽签转盘，支持选项自定义编辑
+        - 转盘配置文件导入、导出本地保存
+        """)
+    with st.expander("实用网站导航", expanded=False):
+        st.write("""合网络优质公开工具、学习网站、娱乐站点，仅做导航收录
+        ##⚠免责声明
+        本页面仅为第三方网站导航收录平台。除特殊标注说明外，所有收录网站均为**公开网络资源**，并非作者创建、运营。用户自主访问、使用外部网站所产生的一切行为与后果，由用户自行承担，请严格遵守国家相关法律法规与各平台用户协议。
+        """)
+
+    st.divider()
+
+    st.markdown("## 后续更新规划")
+    st.write("""
+    本项目**不止于比赛参赛作品**，后续将会持续迭代优化：
+    - 持续优化各模块交互细节，修复已知问题，完善界面适配
+    - 新增更多日常实用工具模块
+    - 优化数据本地保存逻辑，提升使用体验
+    - 补充更多实用公开资源导航
+    """)
+
+    st.divider()
+
+    st.markdown("## 反馈与建议")
+    st.write("使用中遇到BUG、想要新增功能、有任何优化建议，都可以通过下方问卷提交：")
+    st.write("[点击提交项目反馈](https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAX0z5qdUMU1OTldYUEdYV0xDVEdQWDlINVlRTDJGWi4u)")
+
+    st.divider()
+
+    st.markdown("### 开发者寄语")
+    st.caption("开发者：Vincent")
+
+    # 左右列宽 1:3
+    col_avatar, col_saying = st.columns([1, 3])
+
+    # 左侧：头像区域
+    with col_avatar:
+        st.image("D:/Vincent files/Vincent/uh.png", width=200)
+        st.caption("Vincent")
+
+    # 右侧：寄语文本框
+    with col_saying:
+        ""
+        ""
+        "***真正有价值的程序应该是能够服务人类的***"
+        "***而非用复杂繁琐的结构与千奇百怪的语法炫技***"
+
+    # ""
+    "***Made simple, made useful.***"
+    "***One small tool, for your daily life.***"
+
+    # """Give people wonderful tools, and they'll do wonderful things."""
+
 
 query = st.query_params
 page = query.get("page", "home")
 def main_ui():
-    """TAG主页面"""
     st.sidebar.header("功能选择")
     menu = {
         "HELLOTAG":"home",
@@ -501,7 +571,8 @@ def main_ui():
         "凯撒密码加解密":"caesar",
         "BMI计算器":"bmi",
         "数学工具":"math",
-        "优质网站收录":"web"
+        "优质网站收录":"web",
+        "About": "about"
     }
     select_label = st.sidebar.radio("", list(menu.keys()),
                                    index=list(menu.values()).index(page),
@@ -522,6 +593,8 @@ def main_ui():
         math_tools_menu_ui()
     elif select_page == "web":
         web_menu_ui()
+    elif select_page == "about":
+        about_menu_ui()
     else:
         st.title(f"{PROGRAM_NAME} {PROGRAM_VERSION}")
         st.divider()
@@ -531,7 +604,7 @@ def main_ui():
         st.write("开发者：Vincent")
         st.write("基于 Python,Streamlit 构建的网页版工具集")
         st.divider()
-        # 零时标注
+
         little_tag = ["临时标注：",
                       "此项目不仅仅是一个比赛作品，而是一个希望能服务大众的工具。按计划将来 Vincent 会继续优化它"]
         text = ""
@@ -539,7 +612,6 @@ def main_ui():
             text += f"- {reason}\n"
         st.warning(text)
 
-
-# ======================== 程序入口 ========================
+# God bless this code works
 if __name__ == "__main__":
     main_ui()
