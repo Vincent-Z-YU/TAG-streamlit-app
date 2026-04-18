@@ -512,9 +512,10 @@ def about_menu_ui():
         - 转盘配置文件导入、导出本地保存
         """)
     with st.expander("实用网站导航", expanded=False):
-        st.write("""合网络优质公开工具、学习网站、娱乐站点，仅做导航收录
+        st.write("""
+        优质网络、公开工具、学习网站、娱乐站点等网站的收录，仅作导航作用
         ##⚠免责声明
-        本页面仅为第三方网站导航收录平台。除特殊标注说明外，所有收录网站均为**公开网络资源**，并非作者创建、运营。用户自主访问、使用外部网站所产生的一切行为与后果，由用户自行承担，请严格遵守国家相关法律法规与各平台用户协议。
+        上述网站收录本页面仅为第三方网站导航收录平台。除特殊标注说明外，所有收录网站均为**公开网络资源**，并非作者创建、运营。用户自主访问、使用外部网站所产生的一切行为与后果，由用户自行承担，请严格遵守国家相关法律法规与各平台用户协议。
         """)
 
     st.divider()
@@ -533,7 +534,16 @@ def about_menu_ui():
     st.markdown("## 反馈与建议")
     st.write("使用中遇到BUG、想要新增功能、有任何优化建议，都可以通过下方问卷提交：")
     st.write("[点击提交项目反馈](https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAX0z5qdUMU1OTldYUEdYV0xDVEdQWDlINVlRTDJGWi4u)")
-
+    col_1, col_2 = st.columns(2)
+    with col_1:
+        st.components.v1.html("""
+    <iframe width="100%" height="520px" src="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAX0z5qdUMU1OTldYUEdYV0xDVEdQWDlINVlRTDJGWi4u&embed=true" 
+    frameborder="0" marginwidth="0" marginheight="0" 
+    style="border: none; max-width:100%; border-radius:8px;" 
+    allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
+    """)
+    with col_2:
+        st.image("feedback.png", width=200)
     st.divider()
 
     st.markdown("### 开发者寄语")
