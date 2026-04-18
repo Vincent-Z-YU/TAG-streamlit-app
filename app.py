@@ -534,16 +534,17 @@ def about_menu_ui():
     st.markdown("## 反馈与建议")
     st.write("使用中遇到BUG、想要新增功能、有任何优化建议，都可以通过下方问卷提交：")
     st.write("[点击提交项目反馈](https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAX0z5qdUMU1OTldYUEdYV0xDVEdQWDlINVlRTDJGWi4u)")
-    col_1, col_2 = st.columns(2)
-    with col_1:
-        st.components.v1.html("""
-    <iframe width="100%" height="520px" src="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAX0z5qdUMU1OTldYUEdYV0xDVEdQWDlINVlRTDJGWi4u&embed=true" 
-    frameborder="0" marginwidth="0" marginheight="0" 
-    style="border: none; max-width:100%; border-radius:8px;" 
-    allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
-    """)
-    with col_2:
-        st.image("feedback.png", width=200)
+    st.image("feedback.png", width=200)
+    # col_1, col_2 = st.columns(2)
+    # with col_1:
+    #     st.components.v1.html("""
+    # <iframe width="100%" height="520px" src="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAX0z5qdUMU1OTldYUEdYV0xDVEdQWDlINVlRTDJGWi4u&embed=true"
+    # frameborder="0" marginwidth="0" marginheight="0"
+    # style="border: none; max-width:100%; border-radius:8px;"
+    # allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
+    # """)
+    # with col_2:
+    #     st.image("feedback.png", width=200)
     st.divider()
 
     st.markdown("### 开发者寄语")
