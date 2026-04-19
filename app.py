@@ -2,7 +2,18 @@ import streamlit as st
 import random
 import time
 
-st.config.set_option("server.idleTimeout", 1)
+# 闲置自动睡眠
+st.set_page_config(page_title="TAG V2.0", layout="wide")
+if "last_active" not in st.session_state:
+    st.session_state.last_active = time.time()
+IDLE_SLEEP_SECONDS = 10
+now = time.time()
+idle = now - st.session_state.last_active
+if idle > IDLE_SLEEP_SECONDS:
+    st.warning("💤 长时间无操作，页面已休眠")
+    st.stop()
+st.session_state.last_active = time.time()
+# =======
 
 # 全局配置与初始化
 PROGRAM_NAME = "Tools and Games (TAG)"
