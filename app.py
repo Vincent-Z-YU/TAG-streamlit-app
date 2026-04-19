@@ -2,7 +2,7 @@ import streamlit as st
 import random
 import time
 
-st.config.set_option("server.idleTimeout", 10)
+st.config.set_option("server.idleTimeout", 1)
 
 # 全局配置与初始化
 PROGRAM_NAME = "Tools and Games (TAG)"
